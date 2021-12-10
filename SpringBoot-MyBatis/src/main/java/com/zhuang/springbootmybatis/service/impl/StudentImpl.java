@@ -11,12 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * @author Zhuang
- * @version 1.0
- * @description: StudentImpl实现类
- * @date 2021/12/9 15:11
+ * @Classname StudentImpl
+ * @Description StudentImpl服务层
+ * @Date 2021/12/09 17:19
+ * @Author by Zhuang
  */
-
 @Repository
 @Transactional(rollbackFor = Exception.class)
 public class StudentImpl implements StudentService {
