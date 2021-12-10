@@ -7,12 +7,16 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Repository;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
 /**
- * @author Zhuang
+ * @Classname EduDaoImpl
+ * @Description EduDaoImpl服务层
+ * @Date 2021/12/09 17:19
+ * @Author by Zhuang
  */
 @Repository
 public class EduDaoImpl implements EduDao {

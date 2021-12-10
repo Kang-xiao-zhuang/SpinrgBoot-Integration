@@ -6,6 +6,12 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.Date;
+/**
+ * @Classname Edu
+ * @Description Edu实体
+ * @Date 2021/12/09 17:19
+ * @Author by Zhuang
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

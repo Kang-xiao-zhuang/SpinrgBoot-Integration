@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * @author Zhuang
+ * @Classname ControllerForOracle
+ * @Description 测试Oracle的接口
+ * @Date 2021/12/09 17:19
+ * @Author by Zhuang
  */
 @RestController
 public class ControllerForOracle {
