@@ -20,9 +20,9 @@ public class HelloController {
     /**
      * 第一种描述方式，使用注解：@ApiOperation、@ApiParam
      *
-     * @param name
-     * @param age
-     * @return
+     * @param name 姓名
+     * @param age  年龄
+     * @return 字符串
      */
     @GetMapping("/hello1")
     // value：描述该方法的作用，notes：描述该方法的备注信息
@@ -37,9 +37,9 @@ public class HelloController {
     /**
      * 第二种描述方式，使用注解：@ApiOperation、@ApiImplicitParams、@ApiImplicitParam
      *
-     * @param name
-     * @param age
-     * @return
+     * @param name 姓名
+     * @param age  年龄
+     * @return 字符串
      */
     @GetMapping("/hello2")
     @ApiOperation(value = "输出用户信息", notes = "返回一个拼接的字符串")
@@ -59,6 +59,7 @@ public class HelloController {
             @ApiImplicitParam(name = "name", value = "名称", required = true),
             @ApiImplicitParam(name = "age", value = "名称", required = true)
     })
+
     public User hello3(@RequestParam("name") String name, @RequestParam("age") Integer age) {
         User user = new User();
         user.setName(name);
