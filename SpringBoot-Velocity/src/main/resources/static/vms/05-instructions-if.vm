@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+#set($language="java")
+
+#if($language.equals("java")){
+    Java开发
+}#elseif($language.equals("php")){
+    php开发
+}#else
+    开发
+#end
+
+
+</body>
+</html>

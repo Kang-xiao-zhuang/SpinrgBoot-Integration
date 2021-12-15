@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+常规语法:$user.name---$user.password
+正规语法:${user.name}
+
+常规语法:$!user.name---$user.password
+正规语法:$!{user.name}
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+常规语法:$str.split(" ")---$now
+正规语法:${str}---${now.getTime()}
+
+</body>
+</html>

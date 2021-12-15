@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+#set($str="hello zk")
+#set($int=10)
+#set($arr=[1,2,3,4])
+#set($boolean=false)
+#set($map={"key1":"value1"})
+
+#set($name='zhangsan')
+#set($str2="hello $name")
+
+## 获取set指定定义的变量
+字符串: $str --- ${str}
+字符串: $str2 --- ${str2}
+整型: $int ---${int}
+数组类型 $arr --- ${arr}
+
+
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+#foreach($hobby in $hobbies)
+    $foreach.index --- $foreach.count -- $hobby
+#end
+
+<table border="1px">
+    <tr>
+        <td>用户</td>
+        <td>密码</td>
+    </tr>
+    #foreach($user in $userList)
+        <tr>
+            <td>$foreach.count</td>
+            <td>$user.name</td>
+            <td>$user.password</td>
+        </tr>
+    #end
+</table>
+
+#foreach($value in $map)
+    $value
+#end
+
+#foreach($entry in $map.entrySet())
+    $entry.key -- $entry.value
+#end
+
+
+
+
+</body>
+</html>
