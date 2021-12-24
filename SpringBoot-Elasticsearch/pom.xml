@@ -16,6 +16,7 @@
     <properties>
         <java.version>1.8</java.version>
         <elasticsearch.version>7.8.0</elasticsearch.version>
+        <swagger2.version>2.9.2</swagger2.version>
     </properties>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -48,39 +49,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-    </dependencies>
-
-    <!--<dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.elasticsearch</groupId>
-            <artifactId>elasticsearch</artifactId>
-        </dependency>
-        &lt;!&ndash;        &lt;!&ndash; elasticsearch 的客户端 &ndash;&gt;&ndash;&gt;
-        <dependency>
-            <groupId>org.elasticsearch.client</groupId>
-            <artifactId>elasticsearch-rest-high-level-client</artifactId>
-            <version>7.8.0</version>
-        </dependency>
-        &lt;!&ndash; elasticsearch 依赖 2.x 的 log4j &ndash;&gt;
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
@@ -91,12 +59,18 @@
             <artifactId>log4j-core</artifactId>
             <version>2.8.2</version>
         </dependency>
+        <!--swagger-->
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.9.9</version>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swagger2.version}</version>
         </dependency>
-    </dependencies>-->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swagger2.version}</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>

@@ -1,4 +1,4 @@
-package com.zhuang.springbootelasticsearch;
+package com.zhuang.springbootelasticsearch.config;
 
 import lombok.Data;
 import org.apache.http.HttpHost;
