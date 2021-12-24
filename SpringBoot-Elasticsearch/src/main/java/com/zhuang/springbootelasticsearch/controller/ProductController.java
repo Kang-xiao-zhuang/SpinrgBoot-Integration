@@ -23,9 +23,6 @@ public class ProductController {
     @Autowired
     private ProductDao productDao;
 
-    @Autowired
-    private Logger logger;
-
     /**
      * 根据id查询
      *
