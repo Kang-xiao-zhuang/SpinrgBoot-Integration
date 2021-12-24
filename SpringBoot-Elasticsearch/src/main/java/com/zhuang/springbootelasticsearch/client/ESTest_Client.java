@@ -6,6 +6,12 @@ import org.elasticsearch.client.RestHighLevelClient;
 
 import java.io.IOException;
 
+/**
+ * @Classname ESTest_Client
+ * @Description 创建本地的es客户端
+ * @Date 2021/12/23 20:21
+ * @Author by dell
+ */
 public class ESTest_Client {
     public static void main(String[] args) throws IOException {
         // 创建ES客户端

@@ -11,14 +11,18 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
 
 import java.io.IOException;
+
 /**
- * @author Zhuang
+ * @Classname ESTest_Doc_Insert
+ * @Description 插入文档
+ * @Date 2021/12/22 19:21
+ * @Author by dell
  */
 public class ESTest_Doc_Insert {
     public static void main(String[] args) throws IOException {
         // 创建ES客户端
         RestHighLevelClient esClient = new RestHighLevelClient(
-                RestClient.builder(new HttpHost("localhost", 9200, "http"))
+                RestClient.builder(new HttpHost("101.43.21.132", 9200, "http"))
         );
 
         IndexRequest resquest = new IndexRequest();

@@ -14,8 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
-
+/**
+ * @Classname ProductController
+ * @Description Product控制层
+ * @Date 2021/12/23 19:21
+ * @Author by dell
+ */
 @Api(tags = "es产品测试")
 @RestController
 public class ProductController {

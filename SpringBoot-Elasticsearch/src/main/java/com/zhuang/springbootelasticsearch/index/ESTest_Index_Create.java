@@ -8,14 +8,18 @@ import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.client.indices.CreateIndexResponse;
 
 import java.io.IOException;
+
 /**
- * @author Zhuang
+ * @Classname ESTest_Index_Create
+ * @Description 索引创建
+ * @Date 2021/12/21 19:21
+ * @Author by dell
  */
 public class ESTest_Index_Create {
     public static void main(String[] args) throws IOException {
         // 创建ES客户端
         RestHighLevelClient esClient = new RestHighLevelClient(
-                RestClient.builder(new HttpHost("localhost", 9200, "http"))
+                RestClient.builder(new HttpHost("101.43.21.132", 9200, "http"))
         );
 
         // 创建索引

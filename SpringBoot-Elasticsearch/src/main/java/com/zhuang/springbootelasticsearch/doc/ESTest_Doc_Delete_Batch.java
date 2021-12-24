@@ -11,13 +11,16 @@ import org.elasticsearch.client.RestHighLevelClient;
 import java.io.IOException;
 
 /**
- * @author Zhuang
+ * @Classname ESTest_Doc_Delete
+ * @Description 批量删除文档
+ * @Date 2021/12/23 19:21
+ * @Author by dell
  */
 public class ESTest_Doc_Delete_Batch {
     public static void main(String[] args) throws IOException {
         // 创建ES客户端
         RestHighLevelClient esClient = new RestHighLevelClient(
-                RestClient.builder(new HttpHost("localhost", 9200, "http"))
+                RestClient.builder(new HttpHost("101.43.21.132", 9200, "http"))
         );
 
         BulkRequest resquest = new BulkRequest();

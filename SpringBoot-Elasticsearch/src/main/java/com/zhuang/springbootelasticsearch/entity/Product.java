@@ -5,7 +5,12 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
-
+/**
+ * @Classname Product
+ * @Description Product实体
+ * @Date 2021/12/21 19:21
+ * @Author by dell
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

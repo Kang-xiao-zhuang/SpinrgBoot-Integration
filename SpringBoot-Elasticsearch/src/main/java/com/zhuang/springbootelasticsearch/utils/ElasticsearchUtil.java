@@ -1,21 +1,16 @@
 package com.zhuang.springbootelasticsearch.utils;
 
 import lombok.AllArgsConstructor;
-import lombok.*;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.client.RestHighLevelClient;
 import cn.hutool.json.JSONObject;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
-import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
@@ -25,7 +20,6 @@ import org.elasticsearch.action.support.master.AcknowledgedResponse;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.client.indices.CreateIndexResponse;
 import org.elasticsearch.client.indices.GetIndexRequest;
@@ -39,33 +33,30 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * elasticsearch操作工具类
+ * @Classname ElasticsearchUtil
+ * @Description elasticsearch操作工具类
+ * @Date 2021/12/21 19:21
+ * @Author by dell
  */
-
 @Slf4j
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ElasticsearchUtil {
     @NonNull
-    private RestHighLevelClient client;
-
+    private RestHighLevelClient restHighLevelClient;
 
     /**
-     * 添加日志索引库
+     * @param name 索引名称
+     * @return boolean
      */
-
     public boolean createIndex(String name) {
         CreateIndexRequest createIndexRequest = new CreateIndexRequest(name);
         log.info("判断索引是否存在: {}", name);
         try {
-
-/**
- * 先判断索引是否存在，然后在执行是否 添加指令
- */
-
+            //先判断索引是否存在，然后在执行是否 添加指令
             if (!indexExits(name)) {
-                CreateIndexResponse response = client.indices().create(createIndexRequest, RequestOptions.DEFAULT);
+                CreateIndexResponse response = restHighLevelClient.indices().create(createIndexRequest, RequestOptions.DEFAULT);
                 return response.isAcknowledged();
             }
         } catch (IOException e) {
@@ -76,17 +67,18 @@ public class ElasticsearchUtil {
 
     }
 
-
     /**
      * 判断索引库是否存在
+     *
+     * @param name 索引名称
+     * @return boolean
      */
-
     public boolean indexExits(String name) {
         GetIndexRequest getIndexRequest = new GetIndexRequest(name);
         boolean exists = false;
         log.info("判断索引是否存在: {}", name);
         try {
-            exists = client.indices().exists(getIndexRequest, RequestOptions.DEFAULT);
+            exists = restHighLevelClient.indices().exists(getIndexRequest, RequestOptions.DEFAULT);
         } catch (IOException e) {
             log.warn("判断索引是否存在异常  {}", e.getMessage());
             e.printStackTrace();
@@ -94,16 +86,15 @@ public class ElasticsearchUtil {
         return exists;
     }
 
-
     /**
-     * 测试删除索引库
+     * @param name 索引名称
+     * @return boolean
      */
-
     public boolean deleteIndex(String name) {
         DeleteIndexRequest deleteIndexRequest = new DeleteIndexRequest(name);
         boolean exists = false;
         try {
-            AcknowledgedResponse delete = client.indices().delete(deleteIndexRequest, RequestOptions.DEFAULT);
+            AcknowledgedResponse delete = restHighLevelClient.indices().delete(deleteIndexRequest, RequestOptions.DEFAULT);
             if (delete.isAcknowledged()) {
                 return true;
             }
@@ -113,11 +104,13 @@ public class ElasticsearchUtil {
         return exists;
     }
 
-
     /**
      * 测试添加日志记录文档
+     *
+     * @param indexName  indexName
+     * @param jsonObject jsonObject
+     * @return boolean
      */
-
     public boolean createDocument(String indexName, JSONObject jsonObject) {
         //组装数据
         //创建请求
@@ -128,7 +121,7 @@ public class ElasticsearchUtil {
         request.source(jsonObject);
         try {
             //发送请求  获取响应
-            IndexResponse response = client.index(request, RequestOptions.DEFAULT);
+            IndexResponse response = restHighLevelClient.index(request, RequestOptions.DEFAULT);
             RestStatus status = response.status();
             if (status.equals(RestStatus.OK)) {
                 return true;
@@ -145,16 +138,15 @@ public class ElasticsearchUtil {
      *
      * @param indexName 索引名称
      * @param id        文档id
-     * @return
+     * @return boolean
      */
-
     public boolean documentIsExists(String indexName, String id) {
         GetRequest request = new GetRequest(indexName, id);
         request.fetchSourceContext(new FetchSourceContext(false));
         request.storedFields("_none_");
         boolean exists = false;
         try {
-            exists = client.exists(request, RequestOptions.DEFAULT);
+            exists = restHighLevelClient.exists(request, RequestOptions.DEFAULT);
         } catch (IOException e) {
             log.warn("判断文档是否存在异常： {}", e.getMessage());
             e.printStackTrace();
@@ -168,13 +160,12 @@ public class ElasticsearchUtil {
      *
      * @param indexName 索引名称
      * @param id        文档id
-     * @return
+     * @return Map
      */
-
     public Map<String, Object> getDocument(String indexName, String id) {
         GetRequest request = new GetRequest(indexName, id);
         try {
-            GetResponse documentFields = client.get(request, RequestOptions.DEFAULT);
+            GetResponse documentFields = restHighLevelClient.get(request, RequestOptions.DEFAULT);
             return documentFields.getSource();
         } catch (IOException e) {
             log.warn("获取文档失败: {}", e.getMessage());
@@ -183,20 +174,20 @@ public class ElasticsearchUtil {
         return null;
     }
 
-
     /**
      * 根据文档id修改文档信息
      *
-     * @param indexName 索引名称
-     * @param id        文档id
+     * @param indexName  索引名称
+     * @param id         文档id
+     * @param jsonObject jsonObject
+     * @return boolean
      */
-
     public boolean updateDocument(String indexName, String id, JSONObject jsonObject) {
         UpdateRequest request = new UpdateRequest(indexName, id);
         try {
             request.timeout(TimeValue.timeValueSeconds(1));
             request.doc(jsonObject, XContentType.JSON);
-            UpdateResponse update = client.update(request, RequestOptions.DEFAULT);
+            UpdateResponse update = restHighLevelClient.update(request, RequestOptions.DEFAULT);
             if (update.status().equals(RestStatus.OK)) {
                 return true;
             }
@@ -213,12 +204,12 @@ public class ElasticsearchUtil {
      *
      * @param indexName 索引名称
      * @param id        文档id
+     * @return boolean
      */
-
     public boolean deleteDocument(String indexName, String id) {
         DeleteRequest request = new DeleteRequest(indexName, id);
         try {
-            DeleteResponse delete = client.delete(request, RequestOptions.DEFAULT);
+            DeleteResponse delete = restHighLevelClient.delete(request, RequestOptions.DEFAULT);
             if (delete.status().equals(RestStatus.OK)) {
                 return true;
             }
@@ -235,15 +226,14 @@ public class ElasticsearchUtil {
      *
      * @param indexName 索引
      * @param list      批量文档
-     * @return
+     * @return boolean
      */
-
     public boolean bulkDocument(String indexName, List<JSONObject> list) {
         BulkRequest bulkRequest = new BulkRequest(indexName);
         bulkRequest.timeout(TimeValue.timeValueSeconds(2));
         try {
             list.forEach(item -> bulkRequest.add(new IndexRequest().source(item, XContentType.JSON)));
-            BulkResponse bulk = client.bulk(bulkRequest, RequestOptions.DEFAULT);
+            BulkResponse bulk = restHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT);
             if (bulk.status().equals(RestStatus.OK)) {
                 return true;
             }

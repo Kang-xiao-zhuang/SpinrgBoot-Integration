@@ -10,7 +10,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.config.AbstractElasticsearchConfiguration;
 
 /**
- * @author Zhuang
+ * @Classname ElasticsearchConfig
+ * @Description 自定义客户端地址和端口，在配置文件中指定
+ * @Date 2021/12/23 20:21
+ * @Author by dell
  */
 @ConfigurationProperties(prefix = "elasticsearch")
 @Configuration

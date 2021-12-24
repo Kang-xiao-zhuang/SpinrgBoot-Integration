@@ -6,14 +6,18 @@ import org.elasticsearch.action.support.master.AcknowledgedResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
+
 /**
- * @author Zhuang
+ * @Classname ESTest_Index_Delete
+ * @Description 索引删除
+ * @Date 2021/12/21 19:21
+ * @Author by dell
  */
 public class ESTest_Index_Delete {
     public static void main(String[] args) throws Exception {
         // 创建ES客户端
         RestHighLevelClient esClient = new RestHighLevelClient(
-                RestClient.builder(new HttpHost("localhost", 9200, "http"))
+                RestClient.builder(new HttpHost("101.43.21.132", 9200, "http"))
         );
 
         // 创建索引
