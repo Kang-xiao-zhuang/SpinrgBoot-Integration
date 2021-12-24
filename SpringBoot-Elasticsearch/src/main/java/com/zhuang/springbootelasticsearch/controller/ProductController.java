@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Api(tags = "es产品测试")
 @RestController
@@ -22,46 +23,46 @@ public class ProductController {
     @Autowired
     private ProductDao productDao;
 
-/*    @Autowired
-    private ElasticsearchRestTemplate elasticsearchRestTemplate;*/
+    @Autowired
+    private Logger logger;
 
-    //根据id查询
+    /**
+     * 根据id查询
+     *
+     * @return Product
+     */
     @GetMapping("/find")
     @ApiOperation("根据id查询")
     public Product findById() {
-        Product product = productDao.findById(2L).get();
-        System.out.println("product = " + product);
-        return product;
+        return productDao.findById(2L).get();
     }
 
-    //查询所有
+    /**
+     * 查询所有
+     *
+     * @return Iterable
+     */
     @GetMapping("findAll")
     @ApiOperation("查询所有")
-    Iterable<Product> findAll() {
-        Iterable<Product> products = productDao.findAll();
-        for (Product product : products) {
-            System.out.println(product);
-        }
-        return products;
+    public Iterable<Product> findAll() {
+        return productDao.findAll();
     }
 
     @PostMapping("/update")
     @ApiOperation("更新数据")
-    Product update() {
+    public Product update() {
         Product product = new Product();
         product.setId(3L);
         product.setTitle("小辣椒手机");
         product.setCategory("手机");
         product.setPrice(8888.0);
         product.setImages("http://itkxz.cn/hw.jpg");
-        Product save = productDao.save(product);
-        System.out.println("save = " + save);
-        return save;
+        return productDao.save(product);
     }
 
     @GetMapping("/findPage")
     @ApiOperation("分页查询")
-    List<Product> findByPageable() {
+    public List<Product> findByPageable() {
         //分页查询
         // 设置排序（排序方式，倒序还是倒序，排序的id）
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
@@ -73,7 +74,6 @@ public class ProductController {
         Page<Product> productPage = productDao.findAll(pageRequest);
         // 分页查询
         for (Product product : productPage.getContent()) {
-            System.out.println("product = " + product);
             productList.add(product);
         }
         return productList;

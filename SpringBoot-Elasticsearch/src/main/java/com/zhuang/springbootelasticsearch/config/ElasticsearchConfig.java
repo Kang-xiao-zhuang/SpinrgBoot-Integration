@@ -8,6 +8,7 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.config.AbstractElasticsearchConfiguration;
+
 /**
  * @author Zhuang
  */
@@ -19,12 +20,11 @@ public class ElasticsearchConfig extends AbstractElasticsearchConfiguration {
     private Integer port;
 
     /**
-     重写父类方法
+     * 重写父类方法
      */
     @Override
     public RestHighLevelClient elasticsearchClient() {
         RestClientBuilder builder = RestClient.builder(new HttpHost(host, port));
-        RestHighLevelClient restHighLevelClient = new RestHighLevelClient(builder);
-        return restHighLevelClient;
+        return new RestHighLevelClient(builder);
     }
 }
