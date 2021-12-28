@@ -9,10 +9,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeoutException;
 
 /**
- * @author Zhuang
+ * @Classname SimpleConsumer
+ * @Description 简单消费者
+ * @Date 2021/12/28 15:11
+ * @Author by Zhuang
  */
 @Slf4j
-public class Consumer {
+public class SimpleConsumer {
     public static final String QUEUE_NAME = "queue_test";
 
     public static void main(String[] args) throws TimeoutException {

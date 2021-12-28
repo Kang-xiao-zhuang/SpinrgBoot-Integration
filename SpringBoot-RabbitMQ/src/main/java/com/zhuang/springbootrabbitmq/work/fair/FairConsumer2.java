@@ -1,10 +1,11 @@
-package com.zhuang.springbootrabbitmq.work.lunxun;
+package com.zhuang.springbootrabbitmq.work.fair;
 
 import com.rabbitmq.client.CancelCallback;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DeliverCallback;
 import com.rabbitmq.client.Delivery;
 import com.zhuang.springbootrabbitmq.utils.RabbitMQUtils;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -12,21 +13,29 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeoutException;
 
 /**
- * @author Zhuang
+ * @Classname FairConsumer2
+ * @Description 公平消费者2
+ * @Date 2021/12/28 15:11
+ * @Author by Zhuang
  */
 @Slf4j
-public class Consumer2 {
-    public static final String QUEUE_NAME = "queue_work";
+public class FairConsumer2 {
+    public static final String QUEUE_NAME = "queue_fair";
 
     public static void main(String[] args) throws TimeoutException {
-        // 创建连接工程
+            // 创建连接工程
         try (Channel channel = RabbitMQUtils.getChannel("101.43.21.132", 5672, "admin", "admin", "/")) {
             //通过连接获得通道Channel
             //通过交换机创建 声明队列 绑定关系 路由key 发送消息 和接收消息
-            channel.basicConsume(QUEUE_NAME, true, new DeliverCallback() {
+            //设定指标的值
+            channel.basicQos(1);
+            channel.basicConsume(QUEUE_NAME, false, new DeliverCallback() {
+                @SneakyThrows
                 @Override
                 public void handle(String s, Delivery delivery) throws IOException {
                     log.info("Consumer2号接收消息" + new String(delivery.getBody(), StandardCharsets.UTF_8));
+                    Thread.sleep(100);
+                    channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
                 }
             }, new CancelCallback() {
                 @Override

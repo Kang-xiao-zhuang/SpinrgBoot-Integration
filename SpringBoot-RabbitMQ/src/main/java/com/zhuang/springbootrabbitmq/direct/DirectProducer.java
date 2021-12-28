@@ -12,7 +12,7 @@ import java.util.concurrent.TimeoutException;
 
 /**
  * @Classname DirectProducer
- * @Description 用一句话描述类的作用
+ * @Description 直接生产者
  * @Date 2021/12/28 15:11
  * @Author by Zhuang
  */

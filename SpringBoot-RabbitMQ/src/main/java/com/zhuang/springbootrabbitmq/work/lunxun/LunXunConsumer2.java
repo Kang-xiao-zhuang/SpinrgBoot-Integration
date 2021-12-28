@@ -12,21 +12,24 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeoutException;
 
 /**
- * @author Zhuang
+ * @Classname LunXunConsumer2
+ * @Description 轮询消费者2
+ * @Date 2021/12/28 15:11
+ * @Author by Zhuang
  */
 @Slf4j
-public class Consumer1 {
+public class LunXunConsumer2 {
     public static final String QUEUE_NAME = "queue_work";
 
     public static void main(String[] args) throws TimeoutException {
-        // 创建连接工程
+            // 创建连接工程
         try (Channel channel = RabbitMQUtils.getChannel("101.43.21.132", 5672, "admin", "admin", "/")) {
             //通过连接获得通道Channel
             //通过交换机创建 声明队列 绑定关系 路由key 发送消息 和接收消息
             channel.basicConsume(QUEUE_NAME, true, new DeliverCallback() {
                 @Override
                 public void handle(String s, Delivery delivery) throws IOException {
-                    log.info("Consumer1号接收消息" + new String(delivery.getBody(), StandardCharsets.UTF_8));
+                    log.info("Consumer2号接收消息" + new String(delivery.getBody(), StandardCharsets.UTF_8));
                 }
             }, new CancelCallback() {
                 @Override
@@ -34,7 +37,7 @@ public class Consumer1 {
                     log.warn("接受失败...");
                 }
             });
-            log.info("Consumer1号开始接收消息");
+            log.info("Consumer2号开始接收消息");
             System.in.read();
             log.info("消息发送成功");
         } catch (IOException e) {

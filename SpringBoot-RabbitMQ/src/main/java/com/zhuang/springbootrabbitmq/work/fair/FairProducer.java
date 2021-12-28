@@ -8,10 +8,13 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 /**
- * @author Zhuang
+ * @Classname FairProducer
+ * @Description 公平生产者
+ * @Date 2021/12/28 15:11
+ * @Author by Zhuang
  */
 @Slf4j
-public class Producer {
+public class FairProducer {
     public static final String QUEUE_NAME = "queue_fair";
 
     public static void main(String[] args) {

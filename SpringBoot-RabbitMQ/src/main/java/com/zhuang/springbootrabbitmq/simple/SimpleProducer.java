@@ -10,10 +10,13 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 /**
- * @author Zhuang
+ * @Classname SimpleProducer
+ * @Description 简单生产者
+ * @Date 2021/12/28 15:11
+ * @Author by Zhuang
  */
 @Slf4j
-public class Producer {
+public class SimpleProducer {
     public static final String QUEUE_NAME = "queue_test";
 
     public static void main(String[] args) throws TimeoutException {

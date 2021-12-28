@@ -2,7 +2,6 @@ package com.zhuang.springbootrabbitmq.confirm;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.ConfirmCallback;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import com.zhuang.springbootrabbitmq.utils.RabbitMQUtils;
 import lombok.extern.slf4j.Slf4j;
 
