@@ -1,4 +1,4 @@
-package com.zhuang.springbootrabbitmq.topic;
+package com.zhuang.springbootrabbitmq.confirm;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.ConfirmCallback;
@@ -27,9 +27,9 @@ public class ConfirmMessage {
     public static final String PASSWORD = "admin";
 
     public static void main(String[] args) throws IOException, TimeoutException, InterruptedException {
-//        ConfirmMessage.publishMessageIndividually();
-//        ConfirmMessage.publishMessageBatch();
-//        ConfirmMessage.publishMessageAsync();
+        ConfirmMessage.publishMessageIndividually();
+        ConfirmMessage.publishMessageBatch();
+        ConfirmMessage.publishMessageAsync();
     }
 
     /**
