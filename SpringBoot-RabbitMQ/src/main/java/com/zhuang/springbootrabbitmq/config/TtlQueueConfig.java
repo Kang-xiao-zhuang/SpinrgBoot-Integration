@@ -21,6 +21,7 @@ public class TtlQueueConfig {
     public static final String QUEUE_B = "QB";
     public static final String Y_DEAD_LETTER_EXCHANGE = "Y";
     public static final String DEAD_LETTER_QUEUE = "QD";
+    public static final String QUEUE_C = "QC";
 
     /**
      * 声明xExchange
@@ -42,56 +43,116 @@ public class TtlQueueConfig {
         return new DirectExchange(Y_DEAD_LETTER_EXCHANGE);
     }
 
-    //声明队列 A ttl 为 10s 并绑定到对应的死信交换机
+    /**
+     * 声明队列 A ttl 为 10s 并绑定到对应的死信交换机
+     *
+     * @return Queue
+     */
     @Bean("queueA")
     public Queue queueA() {
         Map<String, Object> args = new HashMap<>(3);
-//声明当前队列绑定的死信交换机
+        //声明当前队列绑定的死信交换机
         args.put("x-dead-letter-exchange", Y_DEAD_LETTER_EXCHANGE);
-//声明当前队列的死信路由 key
+        //声明当前队列的死信路由 key
         args.put("x-dead-letter-routing-key", "YD");
-//声明队列的 TTL
+        //声明队列的 TTL
         args.put("x-message-ttl", 10000);
         return QueueBuilder.durable(QUEUE_A).withArguments(args).build();
     }
 
-    // 声明队列 A 绑定 X 交换机
+    /**
+     * 声明队列 A 绑定 X 交换机
+     *
+     * @param queueA    队列 A
+     * @param xExchange X 交换机
+     * @return Binding
+     */
     @Bean
     public Binding queueaBindingX(@Qualifier("queueA") Queue queueA,
                                   @Qualifier("xExchange") DirectExchange xExchange) {
         return BindingBuilder.bind(queueA).to(xExchange).with("XA");
     }
 
-    //声明队列 B ttl 为 40s 并绑定到对应的死信交换机
+    /**
+     * 声明队列 B ttl 为 40s 并绑定到对应的死信交换机
+     *
+     * @return Queue
+     */
     @Bean("queueB")
     public Queue queueB() {
         Map<String, Object> args = new HashMap<>(3);
-//声明当前队列绑定的死信交换机
+        //声明当前队列绑定的死信交换机
         args.put("x-dead-letter-exchange", Y_DEAD_LETTER_EXCHANGE);
-//声明当前队列的死信路由 key
+        //声明当前队列的死信路由 key
         args.put("x-dead-letter-routing-key", "YD");
-//声明队列的 TTL
+        //声明队列的 TTL
         args.put("x-message-ttl", 40000);
         return QueueBuilder.durable(QUEUE_B).withArguments(args).build();
     }
 
-    //声明队列 B 绑定 X 交换机
+    /**
+     * 声明队列 B 绑定 X 交换机
+     *
+     * @param queue1B   队列 B
+     * @param xExchange X 交换机
+     * @return Binding
+     */
     @Bean
     public Binding queuebBindingX(@Qualifier("queueB") Queue queue1B,
                                   @Qualifier("xExchange") DirectExchange xExchange) {
         return BindingBuilder.bind(queue1B).to(xExchange).with("XB");
     }
 
-    //声明死信队列 QD
+    /**
+     * 声明死信队列 QD
+     *
+     * @return 声明死信队列 QD
+     */
     @Bean("queueD")
     public Queue queueD() {
         return new Queue(DEAD_LETTER_QUEUE);
     }
 
-    //声明死信队列 QD 绑定关系
+    /**
+     * 声明死信队列 QD 绑定关系
+     *
+     * @param queueD    死信队列
+     * @param yExchange QD
+     * @return Binding
+     */
     @Bean
-    public Binding deadLetterBindingQAD(@Qualifier("queueD") Queue queueD,
-                                        @Qualifier("yExchange") DirectExchange yExchange) {
+    public Binding deadletterbind(@Qualifier("queueD") Queue queueD,
+                                  @Qualifier("yExchange") DirectExchange yExchange) {
         return BindingBuilder.bind(queueD).to(yExchange).with("YD");
     }
+
+    /**
+     * 声明队列 C 死信交换机
+     *
+     * @return Queue
+     */
+    @Bean("queueC")
+    public Queue queueC() {
+        Map<String, Object> args = new HashMap<>(3);
+        //声明当前队列绑定的死信交换机
+        args.put("x-dead-letter-exchange", Y_DEAD_LETTER_EXCHANGE);
+        //声明当前队列的死信路由 key
+        args.put("x-dead-letter-routing-key", "XC");
+        //没有声明 TTL 属性
+        return QueueBuilder.durable(QUEUE_C).withArguments(args).build();
+    }
+
+    /**
+     * 声明队列 B 绑定 X 交换机
+     *
+     * @param queueC    队列 B
+     * @param xExchange X 交换机
+     * @return Binding
+     */
+    @Bean
+    public Binding queuecBindingX(@Qualifier("queueC") Queue queueC,
+                                  @Qualifier("xExchange") DirectExchange xExchange) {
+        return BindingBuilder.bind(queueC).to(xExchange).with("XC");
+    }
+
 }
