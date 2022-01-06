@@ -19,6 +19,7 @@ public class JedisTest {
         Jedis jedis = new Jedis("101.43.21.132", 6379);
         //测试
         String vlaue = jedis.ping();
+        log.info("vlaue = " + vlaue);
         Set<String> keys = jedis.keys("*");
         for (String key : keys) {
             log.info(key);
@@ -32,7 +33,6 @@ public class JedisTest {
         for (String s : list) {
             log.info(s);
         }
-        log.info("vlaue = " + vlaue);
         //操作set
         jedis.sadd("name", "lucy");
         jedis.sadd("name", "jack");
