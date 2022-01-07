@@ -1,4 +1,4 @@
-package com.zhuang.springbootredis;
+package com.zhuang.springbootredis.jedis;
 
 import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
@@ -47,5 +47,7 @@ public class JedisTest {
         jedis.zadd("china", 100d, "shanghai");
         Set<String> set = jedis.zrange("china", 0, -1);
         log.info(set.toString());
+        // 关闭jedis
+        jedis.close();
     }
 }
