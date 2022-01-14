@@ -1,8 +1,6 @@
 package com.zhuang.springbootrabbitmq.simple;
 
 import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
 import com.zhuang.springbootrabbitmq.utils.RabbitMQUtils;
 import lombok.extern.slf4j.Slf4j;
 
