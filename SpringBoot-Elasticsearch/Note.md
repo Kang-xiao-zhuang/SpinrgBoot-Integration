@@ -2068,3 +2068,589 @@ public class ESTest_Doc_Query {
 }
 ```
 
+# 7. Elasticsearch 环境
+
+## 7.1 相关概念
+
+### 7.1.1 单机 & 集群
+
+单台 Elasticsearch 服务器提供服务，往往都有最大的负载能力，超过这个阈值，服务器 性能就会大大降低甚至不可用，所以生产环境中，一般都是运行在指定服务器集群中。
+
+**除了负载能力，单点服务器也存在其他问题：**
+
+- 单台机器存储容量有限
+
+- 单服务器容易出现单点故障，无法实现高可用
+
+- 单服务的并发处理能力有限
+
+配置服务器集群时，集群中节点数量没有限制，大于等于 2 个节点就可以看做是集群了。一 般出于高性能及高可用方面来考虑集群中节点数量都是 3 个以上
+
+### 7.1.2 集群 Cluster
+
+一个集群就是由一个或多个服务器节点组织在一起，共同持有整个的数据，并一起提供 索引和搜索功能。一个 Elasticsearch 集群有一个唯一的名字标识，这个名字默认就 是”elasticsearch”。这个名字是重要的，因为一个节点只能通过指定某个集群的名字，来加入 这个集群。
+
+### 7.1.3 节点 Node
+
+集群中包含很多服务器，一个节点就是其中的一个服务器。作为集群的一部分，它存储 数据，参与集群的索引和搜索功能。
+
+一个节点也是由一个名字来标识的，默认情况下，这个名字是一个随机的漫威漫画角色 的名字，这个名字会在启动的时候赋予节点。这个名字对于管理工作来说挺重要的，因为在 这个管理过程中，你会去确定网络中的哪些服务器对应于 Elasticsearch 集群中的哪些节点。
+
+一个节点可以通过配置集群名称的方式来加入一个指定的集群。默认情况下，每个节点 都会被安排加入到一个叫做“elasticsearch”的集群中，这意味着，如果你在你的网络中启动了 若干个节点，并假定它们能够相互发现彼此，它们将会自动地形成并加入到一个叫做 “elasticsearch”的集群中。
+
+在一个集群里，只要你想，可以拥有任意多个节点。而且，如果当前你的网络中没有运 行任何 Elasticsearch 节点，这时启动一个节点，会默认创建并加入一个叫做“elasticsearch”的 集群。
+
+## 7.2 Windows 集群
+
+### 7.2.1 部署集群
+
+创建 elasticsearch-cluster 文件夹，在内部复制三个 elasticsearch 服务
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/fdcb72f9284d4e6390f3db9482c290bb.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5bq35bCP5bqE,size_20,color_FFFFFF,t_70,g_se,x_16)
+
+修改集群文件目录中每个节点的 config/elasticsearch.yml 配置文件
+
+**node-1001 节点**
+
+```yaml
+#节点 1 的配置信息：
+#集群名称，节点之间要保持一致
+cluster.name: my-elasticsearch
+#节点名称，集群内要唯一
+node.name: node-1001
+node.master: true
+node.data: true
+#ip 地址
+network.host: localhost
+#http 端口
+http.port: 1001
+#tcp 监听端口
+transport.tcp.port: 9301
+#discovery.seed_hosts: ["localhost:9301", "localhost:9302","localhost:9303"]
+#discovery.zen.fd.ping_timeout: 1m
+#discovery.zen.fd.ping_retries: 5
+#集群内的可以被选为主节点的节点列表
+#cluster.initial_master_nodes: ["node-1", "node-2","node-3"]
+#跨域配置
+#action.destructive_requires_name: true
+http.cors.enabled: true
+http.cors.allow-origin: "*"
+```
+
+**node-1002 节点**
+
+```yaml
+#节点 2 的配置信息：
+#集群名称，节点之间要保持一致
+cluster.name: my-elasticsearch
+#节点名称，集群内要唯一
+node.name: node-1002
+node.master: true
+node.data: true
+#ip 地址
+network.host: localhost
+#http 端口
+http.port: 1002
+#tcp 监听端口
+transport.tcp.port: 9302
+discovery.seed_hosts: ["localhost:9301"]
+discovery.zen.fd.ping_timeout: 1m
+discovery.zen.fd.ping_retries: 5
+#集群内的可以被选为主节点的节点列表
+#cluster.initial_master_nodes: ["node-1", "node-2","node-3"]
+#跨域配置
+#action.destructive_requires_name: true
+http.cors.enabled: true
+http.cors.allow-origin: "*"
+```
+
+**node-1003 节点**
+
+```yaml
+#节点 3 的配置信息：
+#集群名称，节点之间要保持一致
+cluster.name: my-elasticsearch
+#节点名称，集群内要唯一
+node.name: node-1003
+node.master: true
+node.data: true
+#ip 地址
+network.host: localhost
+#http 端口
+http.port: 1003
+#tcp 监听端口
+transport.tcp.port: 9303
+#候选主节点的地址，在开启服务后可以被选为主节点
+discovery.seed_hosts: ["localhost:9301", "localhost:9302"]
+discovery.zen.fd.ping_timeout: 1m
+discovery.zen.fd.ping_retries: 5
+#集群内的可以被选为主节点的节点列表
+#cluster.initial_master_nodes: ["node-1", "node-2","node-3"]
+#跨域配置
+#action.destructive_requires_name: true
+http.cors.enabled: true
+http.cors.allow-origin: "*"
+```
+
+### 7.2.2 启动集群
+
+启动前先删除每个节点中的 data 目录中所有内容（如果存在）
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/f03885c0007743a98b236c0cd192c8c9.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5bq35bCP5bqE,size_20,color_FFFFFF,t_70,g_se,x_16)
+
+分别双击执行 bin/elasticsearch.bat, 启动节点服务器，启动后，会自动加入指定名称的 集群
+
+### 7.2.3 测试集群
+
+查看集群状态
+
+**node-1001 节点**
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/3e4a5dc7626b4363a4691aef76d08fa8.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5bq35bCP5bqE,size_20,color_FFFFFF,t_70,g_se,x_16)
+
+**node-1002 节点**
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/90847146a8df4f0ab13feb1f926fb575.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5bq35bCP5bqE,size_20,color_FFFFFF,t_70,g_se,x_16)
+
+**node-1003 节点**
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/46aa66120d7d496b8d227ad526b82f19.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5bq35bCP5bqE,size_20,color_FFFFFF,t_70,g_se,x_16)
+
+> status字段指示着当前集群在总体上是否工作正常，它的三种颜色含义如下
+>
+> green 所有的主分片和副本分片都正常运行
+>
+> yellow 所有的主分片都正常运行，但不是所有的副本分片都正常运行
+>
+> red 有主分片没能正常运行
+
+
+
+## 7.3 Linux单机
+
+软件下载地址：https://www.elastic.co/cn/downloads/past-releases/elasticsearch-7-8-0
+
+### 软件安装
+
+#### 解压缩软件 到指定目录
+
+```shell
+#解压缩到 /opt/es目录下
+tar -zxvf elasticsearch-7.8.0-linux-x86_64.tar.gz -C /opt
+
+# 改名
+mv elasticsearch-7.8.0 es
+```
+
+#### 创建用户
+
+因为安全问题，Elasticsearch 不允许 root 用户直接运行，所以要创建新用户，在 root 用户中创建新用户
+
+```shell
+useradd es #新增 es 用户
+
+passwd es #为 es 用户设置密码
+
+userdel -r es #如果错了，可以删除再加
+
+chown -R es:es /opt/module/es #文件夹所有者
+```
+
+#### 修改配置文件
+
+修改 `/opt/es/config/elasticsearch.yml` 文件
+
+```yml
+# 加入如下配置
+cluster.name: elasticsearch
+node.name: node-1
+network.host: 0.0.0.0
+http.port: 9200
+cluster.initial_master_nodes: ["node-1"]
+```
+
+修改`/etc/security/limits.conf`
+
+```shell
+# 在文件末尾中增加下面内容
+# 每个进程可以打开的文件数的限制
+es soft nofile 65536
+es hard nofile 65536
+```
+
+修改`/etc/security/limits.d/20-nproc.conf`
+
+```yml
+# 在文件末尾中增加下面内容
+# 每个进程可以打开的文件数的限制
+es soft nofile 65536
+es hard nofile 65536
+# 操作系统级别对每个用户创建的进程数的限制
+* hard nproc 4096
+# 注：* 带表 Linux 所有用户名称
+```
+
+修改`/etc/sysctl.conf`
+
+```shell
+# 在文件中增加下面内容
+# 一个进程可以拥有的 VMA(虚拟内存区域)的数量,默认值为 65536
+vm.max_map_count=655360
+```
+
+**重新加载**
+
+```shell
+sysctl -p
+```
+
+### 启动软件
+
+使用 ES 用户启动
+
+```shell
+cd /opt/es/
+
+#启动
+bin/elasticsearch
+
+#后台启动
+bin/elasticsearch -d
+```
+
+启动时，会动态生成文件，如果文件所属用户不匹配，会发生错误，需要重新进行修改用户和用户组
+
+![](https://img-blog.csdnimg.cn/img_convert/04272adcab51bb6118f9f3a968cd6eb1.png)
+
+**关闭防火墙**
+
+```shell
+#暂时关闭防火墙
+systemctl stop firewalld
+
+#永久关闭防火墙
+systemctl enable firewalld.service #打开防火墙永久性生效，重启后不会复原
+systemctl disable firewalld.service #关闭防火墙，永久性生效，重启后不会复原
+```
+
+**es文件一览**
+
+![](https://img-blog.csdnimg.cn/img_convert/fd12a920f20ce65145741eabfe9dcbb6.png)
+
+**报错解决**
+
+> OpenJDK 64-Bit Server VM warning: INFO: os::commit_memory(0x0000000080000000, 2147483648, 0) failed; error='Not enough space' (errno=12)
+
+![](https://img-blog.csdnimg.cn/img_convert/a4006527264681c77556ba291ebe8afc.png)
+
+```yml
+# 设置 JVM 初始内存为 1G。此值可以设置与-Xmx 相同，以避免每次垃圾回收完成后 JVM 重新分配内存
+# Xms represents the initial size of total heap space
+# 设置 JVM 最大可用内存为 1G
+# Xmx represents the maximum size of total heap space
+-Xms256m
+-Xms256m
+```
+
+在浏览器输入https://Ip:9200 测试是否成功
+
+![](https://img-blog.csdnimg.cn/img_convert/7c7eee10c36ba28a51cbc2b7cb73ab4d.png)
+
+## 7.4 Linux集群
+
+**软件下载**
+
+软件下载地址：https://www.elastic.co/cn/downloads/past-releases/elasticsearch-7-8-0
+
+#### 7.4.1 解压缩软件 到指定目录
+
+```shell
+#解压缩到 /opt/es目录下
+tar -zxvf elasticsearch-7.8.0-linux-x86_64.tar.gz -C /opt
+
+# 改名
+mv elasticsearch-7.8.0 es-cluster
+```
+
+#### 7.4.2 创建用户
+
+因为安全问题，Elasticsearch 不允许 root 用户直接运行，所以要创建新用户，在 root 用户中创建新用户
+
+```shell
+useradd es #新增 es 用户
+
+passwd es #为 es 用户设置密码
+
+userdel -r es #如果错了，可以删除再加
+
+chown -R es:es /opt/module/es-cluster #文件夹所有者
+```
+
+#### 7.4.3 修改配置文件
+
+修改 `/opt/es/config/elasticsearch.yml` 文件
+
+```yml
+# 加入如下配置
+#集群名称
+cluster.name: cluster-es
+#节点名称，每个节点的名称不能重复
+node.name: node-1
+#ip 地址，每个节点的地址不能重复
+network.host: linux1
+#是不是有资格主节点
+node.master: true
+node.data: true
+http.port: 9200
+# head 插件需要这打开这两个配置
+http.cors.allow-origin: "*"
+http.cors.enabled: true
+http.max_content_length: 200mb
+#es7.x 之后新增的配置，初始化一个新的集群时需要此配置来选举 master
+cluster.initial_master_nodes: ["node-1"]
+#es7.x 之后新增的配置，节点发现
+discovery.seed_hosts: ["linux1:9300","linux2:9300","linux3:9300"]
+gateway.recover_after_nodes: 2
+network.tcp.keep_alive: true
+network.tcp.no_delay: true
+transport.tcp.compress: true
+#集群内同时启动的数据任务个数，默认是 2 个
+cluster.routing.allocation.cluster_concurrent_rebalance: 16
+#添加或删除节点及负载均衡时并发恢复的线程个数，默认 4 个
+cluster.routing.allocation.node_concurrent_recoveries: 16
+#初始化数据恢复时，并发恢复线程的个数，默认 4 个
+cluster.routing.allocation.node_initial_primaries_recoveries: 16
+```
+
+**剩余步骤参考Linux单机**
+
+### 7.4.4 启动软件
+
+分别在不同节点上启动ES软件
+
+```shell
+cd /opt/es-cluster
+#启动
+bin/elasticsearch
+#后台启动
+bin/elasticsearch -d
+```
+
+# 8. Elasticsearch 进阶
+
+## 8.1 核心概念
+
+### 8.1.1 索引（Index）
+
+一个索引就是一个拥有几分相似特征的文档的集合。比如说，你可以有一个客户数据的 索引，另一个产品目录的索引，还有一个订单数据的索引。一个索引由一个名字来标识（必 须全部是小写字母），并且当我们要对这个索引中的文档进行索引、搜索、更新和删除的时 候，都要使用到这个名字。在一个集群中，可以定义任意多的索引。 能搜索的数据必须索引，这样的好处是可以提高查询速度，比如：新华字典前面的目录 就是索引的意思，目录可以提高查询速度。
+
+> Elasticsearch 索引的精髓：一切设计都是为了提高搜索的性能。
+
+### 8.1.2 类型（Type）
+
+在一个索引中，你可以定义一种或多种类型。 一个类型是你的索引的一个逻辑上的分类/分区，其语义完全由你来定。通常，会为具 有一组共同字段的文档定义一个类型。不同的版本，类型发生了不同的变化
+
+### 8.1.3 文档（Document）
+
+一个文档是一个可被索引的基础信息单元，也就是一条数据 比如：你可以拥有某一个客户的文档，某一个产品的一个文档，当然，也可以拥有某个 订单的一个文档。文档以 JSON（Javascript Object Notation）格式来表示，而 JSON 是一个 到处存在的互联网数据交互格式。 在一个 index/type 里面，你可以存储任意多的文档。
+
+### 8.1.4 字段（Field）
+
+相当于是数据表的字段，对文档数据根据不同属性进行的分类标识
+
+### 8.1.5 映射（Mapping）
+
+mapping 是处理数据的方式和规则方面做一些限制，如：某个字段的数据类型、默认值、 分析器、是否被索引等等。这些都是映射里面可以设置的，其它就是处理 ES 里面数据的一 些使用规则设置也叫做映射，按着最优规则处理数据对性能提高很大，因此才需要建立映射， 并且需要思考如何建立映射才能对性能更好。
+
+### 8.1.6 分片（Shards）
+
+一个索引可以存储超出单个节点硬件限制的大量数据。比如，一个具有 10 亿文档数据 的索引占据 1TB 的磁盘空间，而任一节点都可能没有这样大的磁盘空间。或者单个节点处 理搜索请求，响应太慢。为了解决这个问题，Elasticsearch 提供了将索引划分成多份的能力， 每一份就称之为分片。当你创建一个索引的时候，你可以指定你想要的分片的数量。每个分 片本身也是一个功能完善并且独立的“索引”，这个“索引”可以被放置到集群中的任何节点 上。
+
+分片很重要，主要有两方面的原因：
+
+1）允许你水平分割 / 扩展你的内容容量。
+
+2）允许你在分片之上进行分布式的、并行的操作，进而提高性能/吞吐量。
+
+至于一个分片怎样分布，它的文档怎样聚合和搜索请求，是完全由 Elasticsearch 管理的， 对于作为用户的你来说，这些都是透明的，无需过分关心。
+
+> 被混淆的概念是，一个 Lucene 索引 我们在 Elasticsearch 称作 分片 。 一个 Elasticsearch 索引 是分片的集合。 当 Elasticsearch 在索引中搜索的时候， 他发送查询 到每一个属于索引的分片(Lucene 索引)，然后合并每个分片的结果到一个全局的结果集。
+
+### 8.1.7  副本（Replicas）
+
+在一个网络 / 云的环境里，失败随时都可能发生，在某个分片/节点不知怎么的就处于 离线状态，或者由于任何原因消失了，这种情况下，有一个故障转移机制是非常有用并且是 强烈推荐的。为此目的，Elasticsearch 允许你创建分片的一份或多份拷贝，这些拷贝叫做复 制分片(副本)。
+
+复制分片之所以重要，有两个主要原因：
+
+- 在分片/节点失败的情况下，提供了高可用性。因为这个原因，注意到复制分片从不与 原/主要（original/primary）分片置于同一节点上是非常重要的。
+
+- 扩展你的搜索量/吞吐量，因为搜索可以在所有的副本上并行运行。
+
+总之，每个索引可以被分成多个分片。一个索引也可以被复制 0 次（意思是没有复制） 或多次。一旦复制了，每个索引就有了主分片（作为复制源的原来的分片）和复制分片（主 分片的拷贝）之别。分片和复制的数量可以在索引创建的时候指定。在索引创建之后，你可 以在任何时候动态地改变复制的数量，但是你事后不能改变分片的数量。默认情况下， Elasticsearch 中的每个索引被分片 1 个主分片和 1 个复制，这意味着，如果你的集群中至少 有两个节点，你的索引将会有 1 个主分片和另外 1 个复制分片（1 个完全拷贝），这样的话 每个索引总共就有 2 个分片，我们需要根据索引需要确定分片个数。
+
+### 8.1.8 分配（Allocation）
+
+将分片分配给某个节点的过程，包括分配主分片或者副本。如果是副本，还包含从主分 片复制数据的过程。这个过程是由 master 节点完成的。
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/cf02c804d89d46e08052d8bf20ac18fa.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5bq35bCP5bqE,size_20,color_FFFFFF,t_70,g_se,x_16)
+
+一个运行中的 Elasticsearch 实例称为一个节点，而集群是由一个或者多个拥有相同 cluster.name 配置的节点组成， 它们共同承担数据和负载的压力。当有节点加入集群中或者 从集群中移除节点时，集群将会重新平均分布所有的数据。
+
+当一个节点被选举成为主节点时， 它将负责管理集群范围内的所有变更，例如增加、 删除索引，或者增加、删除节点等。 而主节点并不需要涉及到文档级别的变更和搜索等操 作，所以当集群只拥有一个主节点的情况下，即使流量的增加它也不会成为瓶颈。 任何节 点都可以成为主节点。
+
+作为用户，我们可以将请求发送到集群中的任何节点 ，包括主节点。 每个节点都知道 任意文档所处的位置，并且能够将我们的请求直接转发到存储我们所需文档的节点。 无论 我们将请求发送到哪个节点，它都能负责从各个包含我们所需文档的节点收集回数据，并将 最终结果返回給客户端。 Elasticsearch 对这一切的管理都是透明的。
+
+**后续补充！！！**
+
+**索引测试**
+
+```java
+package com.zhuang.springbootelasticsearch;
+
+import com.zhuang.springbootelasticsearch.dao.ProductDao;
+import com.zhuang.springbootelasticsearch.entity.Product;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.TermQueryBuilder;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+
+import java.util.ArrayList;
+
+@SpringBootTest
+class SpringBootElasticsearchApplicationTests {
+
+    //注入 ElasticsearchRestTemplate
+    @Autowired
+    private ElasticsearchRestTemplate elasticsearchRestTemplate;
+
+    @Autowired
+    private ProductDao productDao;
+
+    @Test
+    void contextLoads() {
+    }
+
+    //创建索引并增加映射配置
+    @Test
+    public void createIndex() {
+        //创建索引，系统初始化会自动创建索引
+        System.out.println("创建索引");
+    }
+
+    @Test
+    void deleteIndex() {
+        // 删除索引
+        boolean flag = elasticsearchRestTemplate.indexOps(Product.class).delete();
+        System.out.println("flag = " + flag);
+    }
+
+    @Test
+    void save() {
+        Product product = new Product();
+        product.setId(2L);
+        product.setTitle("华为手机");
+        product.setCategory("手机");
+        product.setPrice(2999.0);
+        product.setImages("http://itkxz.cn/hw.jpg");
+        productDao.save(product);
+    }
+
+    @Test
+    void update() {
+        Product product = new Product();
+        product.setId(2L);
+        product.setTitle("小米手机");
+        product.setCategory("手机");
+        product.setPrice(2999.0);
+        product.setImages("http://itkxz.cn/hw.jpg");
+        Product save = productDao.save(product);
+        System.out.println("save = " + save);
+    }
+
+    //根据id查询
+    @Test
+    void findById() {
+        Product product = productDao.findById(2L).get();
+        System.out.println("product = " + product);
+    }
+
+    //查询所有
+    @Test
+    void findAll() {
+        Iterable<Product> products = productDao.findAll();
+        for (Product product : products) {
+            System.out.println(product);
+        }
+    }
+
+    //删除
+    @Test
+    void delete() {
+        Product product = new Product();
+        product.setId(2L);
+        productDao.delete(product);
+    }
+
+    @Test
+    void saveAll() {
+        ArrayList<Product> productList = new ArrayList<>();
+        for (int i = 3; i < 6; i++) {
+            Product product = new Product();
+            product.setId(Long.valueOf(i));
+            product.setTitle("[" + i + "]小米手机");
+            product.setCategory("手机");
+            product.setPrice(1999.0 + i);
+            product.setImages("http://www.atguigu/xm.jpg");
+            productList.add(product);
+        }
+        productDao.saveAll(productList);
+    }
+
+    @Test
+    void findByPageable() {
+        //分页查询
+        // 设置排序（排序方式，倒序还是倒序，排序的id）
+        Sort sort = Sort.by(Sort.Direction.DESC, "id");
+        int from = 0;
+        int size = 2;
+        // 设置查询分页
+        PageRequest pageRequest = PageRequest.of(from, size, sort);
+        Page<Product> productPage = productDao.findAll(pageRequest);
+        // 分页查询
+        for (Product product : productPage.getContent()) {
+            System.out.println("product = " + product);
+        }
+    }
+
+    @Test
+    void termQuery() {
+        TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery("id", 3);
+        Iterable<Product> products = productDao.search(termQueryBuilder);
+        for (Product product : products) {
+            System.out.println("product = " + product);
+        }
+    }
+
+    /**
+     * term 查询加分页
+     */
+    @Test
+    public void termQueryByPage() {
+        int currentPage = 0;
+        int pageSize = 5;
+        //设置查询分页
+        PageRequest pageRequest = PageRequest.of(currentPage, pageSize);
+        TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery("title", " 小米");
+        Iterable<Product> products = productDao.search(termQueryBuilder, pageRequest);
+        for (Product product : products) {
+            System.out.println(product);
+        }
+    }
+}
+```
+
