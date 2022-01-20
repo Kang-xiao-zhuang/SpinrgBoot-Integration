@@ -9,6 +9,7 @@
         <module>Slf4j</module>
         <module>Logback</module>
         <module>JUL</module>
+        <module>Log4j2</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
