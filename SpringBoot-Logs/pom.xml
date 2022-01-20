@@ -5,6 +5,10 @@
     <packaging>pom</packaging>
     <modules>
         <module>Log4j</module>
+        <module>JCL</module>
+        <module>Slf4j</module>
+        <module>Logback</module>
+        <module>JUL</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
