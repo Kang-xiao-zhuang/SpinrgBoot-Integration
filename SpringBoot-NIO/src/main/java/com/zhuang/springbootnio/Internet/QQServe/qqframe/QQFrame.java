@@ -1,6 +1,6 @@
 package com.zhuang.springbootnio.Internet.QQServe.qqframe;
 
-import com.zhuang.Intelnet.QQServe.qqserver.QQServer;
+import com.zhuang.springbootnio.Internet.QQServe.qqserver.QQServer;
 
 /**
  * @Classname QQFrame
