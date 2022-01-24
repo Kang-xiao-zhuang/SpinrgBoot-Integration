@@ -1,7 +1,7 @@
 package com.zhuang.springbootnio.Internet.QQServe.qqserver;
 
-import com.zhuang.Intelnet.QQServe.qqcommon.Message;
-import com.zhuang.Intelnet.QQServe.qqcommon.MessageType;
+import com.zhuang.springbootnio.Internet.QQServe.qqcommon.Message;
+import com.zhuang.springbootnio.Internet.QQServe.qqcommon.MessageType;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

@@ -1,9 +1,9 @@
 package com.zhuang.springbootnio.Internet.QQClient.views;
 
-import com.zhuang.Intelnet.QQClient.service.FileClientService;
-import com.zhuang.Intelnet.QQClient.service.MessageClientService;
-import com.zhuang.Intelnet.QQClient.service.UserClientService;
-import com.zhuang.Intelnet.QQServe.utils.Utility;
+import com.zhuang.springbootnio.Internet.QQClient.service.FileClientService;
+import com.zhuang.springbootnio.Internet.QQClient.service.MessageClientService;
+import com.zhuang.springbootnio.Internet.QQClient.service.UserClientService;
+import com.zhuang.springbootnio.Internet.QQServe.utils.Utility;
 
 /**
  * @Classname QQView

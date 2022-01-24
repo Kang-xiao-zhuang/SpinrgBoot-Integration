@@ -1,6 +1,6 @@
 package com.zhuang.springbootnio.Internet.Upload;
 
-import com.zhuang.Intelnet.StreamUtils;
+import com.zhuang.springbootnio.Internet.StreamUtils;
 
 import java.io.*;
 import java.net.ServerSocket;
