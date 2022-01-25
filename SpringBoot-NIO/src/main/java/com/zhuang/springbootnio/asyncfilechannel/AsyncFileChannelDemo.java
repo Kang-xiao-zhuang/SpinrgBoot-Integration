@@ -21,6 +21,9 @@ public class AsyncFileChannelDemo {
         //asyncFileChannelDemo.writeAsyncFilehannelComplate();
     }
 
+    /**
+     * 异步读数据
+     */
     public void readAsyncFilehannelFuture() throws IOException {
         //创建AsynchronousFileChannel
         Path path = Paths.get("d:\\01.txt");
@@ -43,6 +46,9 @@ public class AsyncFileChannelDemo {
         byteBuffer.clear();
     }
 
+    /**
+     * 异步读数据
+     */
     public void readAsyncFilehannelComplate() throws IOException {
         //创建AsynchronousFileChannel
         Path path = Paths.get("d:\\01.txt");
@@ -73,6 +79,9 @@ public class AsyncFileChannelDemo {
         });
     }
 
+    /**
+     * 异步写数据
+     */
     public void writeAsyncFilehannelFuture() throws IOException {
         //创建AsynchronousFileChannel
         Path path = Paths.get("d:\\01.txt");
@@ -87,6 +96,9 @@ public class AsyncFileChannelDemo {
         System.out.println("write over");
     }
 
+    /**
+     * 异步写数据
+     */
     public void writeAsyncFilehannelComplate() throws IOException {
         //创建AsynchronousFileChannel
         Path path = Paths.get("d:\\01.txt");

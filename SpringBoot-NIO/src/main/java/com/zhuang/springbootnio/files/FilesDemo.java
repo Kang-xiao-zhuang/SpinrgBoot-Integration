@@ -78,4 +78,21 @@ public class FilesDemo {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 移动文件
+     */
+    public void moveFile() {
+        // 文件复制方法
+        Path sourcePath = Paths.get("d:\\01.txt");
+        Path destinationPath = Paths.get("d:\\88\\002.txt");
+        try {
+            Files.move(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (FileAlreadyExistsException e) {
+            // 目录已经存在
+        } catch (IOException e) {
+            // 其他发生的异常
+            e.printStackTrace();
+        }
+    }
 }
