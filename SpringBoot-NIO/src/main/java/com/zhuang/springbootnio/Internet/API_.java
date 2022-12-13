@@ -15,7 +15,7 @@ public class API_ {
         InetAddress localHost = InetAddress.getLocalHost();
         System.out.println(localHost);
         //根据指定主机名/域名获取 ip 地址对象 getByName
-        InetAddress host2 = InetAddress.getByName("DESKTOP-5H1AECH");
+        InetAddress host2 = InetAddress.getByName("PC-20220712GCXB");
         System.out.println(host2);
         InetAddress host3 = InetAddress.getByName("itkxz.cn");
         System.out.println(host3);
