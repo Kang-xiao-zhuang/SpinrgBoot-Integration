@@ -2,10 +2,7 @@ package com.zhuang.springbootswaggerui.controller;
 
 import com.zhuang.springbootswaggerui.entity.User;
 import io.swagger.annotations.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Classname HelloController
@@ -17,6 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 //该注解用于描述当前控制器的作用
 @Api(tags = "Hello控制器")
 public class HelloController {
+
+    @RequestMapping("/getUser")
+    public User getUser() {
+        return new User("康小庄", 18);
+    }
+
+
     /**
      * 第一种描述方式，使用注解：@ApiOperation、@ApiParam
      *
