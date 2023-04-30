@@ -18,21 +18,12 @@ class SpringBootMongoDbApplicationTests {
     void contextLoads() {
     }
 
-
-    @Test
-    void testGetDBS() {
-        MongoIterable<String> dbNames = MongoDBUtil.getMongoClient().listDatabaseNames();
-        for (String db : dbNames) {
-            System.out.println(db);
-        }
-    }
-
     @Autowired
     private StudentDao studentDao;
 
     @Test
     void addOneStudent() {
-//        插入10行
+        //插入10行
         for (int count = 0; count < 10; count++) {
             Student student = new Student()
                     .setStudentId("student_" + count) //如果自己不去设置id则系统会分配给一个id
@@ -56,7 +47,6 @@ class SpringBootMongoDbApplicationTests {
         Student student = studentDao.getAllByStudentName("Godfery1");
         student.setStudentAge(22);
         studentDao.save(student);
-
     }
 
     @Test

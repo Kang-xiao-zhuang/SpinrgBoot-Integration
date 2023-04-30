@@ -40,7 +40,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     // 根据主键id获取一名学生
-    public Student getOneStudentByStudentId(String studentId) {
+    public void getOneStudentByStudentId(String studentId) {
         return mongoTemplate.findById(studentId, Student.class);
     }
 
