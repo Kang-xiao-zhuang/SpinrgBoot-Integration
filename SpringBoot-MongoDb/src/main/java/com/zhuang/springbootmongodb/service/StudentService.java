@@ -21,7 +21,7 @@ public interface StudentService {
     void updateOneStudent(Student student);
 
     //根据主键id获取一名学生
-    void getOneStudentByStudentId(String studentId);
+    Student getOneStudentByStudentId(String studentId);
 
     //获取全部学生
     List<Student> getAllStudent();

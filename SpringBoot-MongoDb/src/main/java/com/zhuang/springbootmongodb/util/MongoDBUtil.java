@@ -29,12 +29,12 @@ public class MongoDBUtil {
         getCollection(DB_NAME, COLLECTION_NAME);
         // insert();
         find();
-        // update();
-        delete();
+        update();
+        //delete();
         find();
     }
 
-    private static MongoClient mongoClient;
+    private static final MongoClient mongoClient;
 
     static {
         System.out.println("===============MongoDBUtil初始化========================");
@@ -44,7 +44,7 @@ public class MongoDBUtil {
         adds.add(serverAddress);
         List<MongoCredential> credentials = new ArrayList<>();
         //MongoCredential.createScramSha1Credential()三个参数分别为 用户名 数据库名称 密码
-        MongoCredential mongoCredential = MongoCredential.createScramSha1Credential("myroot", DB_NAME, "123456".toCharArray());
+        MongoCredential mongoCredential = MongoCredential.createScramSha1Credential("zk", DB_NAME, "zk123".toCharArray());
         credentials.add(mongoCredential);
         //通过连接认证获取MongoDB连接
         mongoClient = new MongoClient(adds, credentials);
