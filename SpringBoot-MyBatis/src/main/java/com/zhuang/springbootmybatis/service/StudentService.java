@@ -17,14 +17,14 @@ public interface StudentService {
      * @param id 主键
      * @return student实体
      */
-    public Student findOne(Integer id);
+    Student findOne(Integer id);
 
     /**
      * 查找所有学生实体
      *
      * @return List集合
      */
-    public List<Student> findAll();
+    List<Student> findAll();
 
     /**
      * 添加一个学生实体
@@ -32,7 +32,7 @@ public interface StudentService {
      * @param student student实体
      * @return 影响个数
      */
-    public Integer addOne(Student student);
+    Integer addOne(Student student);
 
     /**
      * 根据主键删除学生
@@ -40,7 +40,7 @@ public interface StudentService {
      * @param id 主键值
      * @return 影响个数
      */
-    public Integer deleteById(Integer id);
+    Integer deleteById(Integer id);
 
     /**
      * 更新学生数据
@@ -48,5 +48,5 @@ public interface StudentService {
      * @param student student实体
      * @return 影响个数
      */
-    public Integer updateById(Student student);
+    Integer updateById(Student student);
 }

@@ -46,9 +46,8 @@ public class ControllerForOracle {
 
     @RequestMapping("/getEdu")
     public List<Edu> test() {
-        List<Edu> lists = jdbcTemplate.query("SELECT * FROM EDU WHERE ROWNUM <6",
+        return jdbcTemplate.query("SELECT * FROM EDU WHERE ROWNUM <6",
                 new BeanPropertyRowMapper<>(Edu.class));
-        return lists;
     }
 
 }
