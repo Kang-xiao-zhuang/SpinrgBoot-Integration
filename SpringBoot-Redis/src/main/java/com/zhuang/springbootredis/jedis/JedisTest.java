@@ -16,7 +16,7 @@ import java.util.Set;
 public class JedisTest {
     public static void main(String[] args) {
         // 创建对象
-        Jedis jedis = new Jedis("192.168.192.129", 6379);
+        Jedis jedis = new Jedis("192.168.192.130", 6379);
         //测试
         String value = jedis.ping();
         log.info("value = " + value);
