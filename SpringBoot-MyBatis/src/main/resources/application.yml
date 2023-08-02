@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://101.43.21.132:3307/test?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: 123456
+    #druid控制台访问地址：http://localhost:8080/druid
+    druid:
+      filters: stat,wall
+      stat-view-servlet:
+        enabled: true
+        login-username: admin
+        login-password: admin
+      web-stat-filter:
+        enabled: true
+        urlPattern: /*
+        exclusions: '*.css,*.js,*.gif,*.jpg,*.png,*.ico,/druid/*'
+mybatis:
+  #配置 mybatis 配置文件位置
+  config-location: classpath:mybatis/mybatis-config.xml
+  #配置 mybatis 映射文件位置
+  mapper-locations: classpath:mybatis/mapper/*.xml
+server:
+  port: 8888
