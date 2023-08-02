@@ -13,7 +13,7 @@ import java.util.List;
  * @description: StudentController
  * @date 2021/12/9 15:14
  */
-@RestController
+//@RestController("/student")
 public class StudentController {
     @Autowired
     private StudentService studentService;
