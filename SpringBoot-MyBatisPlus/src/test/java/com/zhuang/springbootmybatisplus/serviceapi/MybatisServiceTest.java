@@ -66,9 +66,7 @@ public class MybatisServiceTest {
 
     @Test
     void testPage(){
-        // todo 未debug完全
         Page<TUser> page = userService.page(new Page<>(1,2));
-        System.out.println("总页数： " + page.getPages());
         System.out.println("总数量： " +page.getRecords());
     }
 }
