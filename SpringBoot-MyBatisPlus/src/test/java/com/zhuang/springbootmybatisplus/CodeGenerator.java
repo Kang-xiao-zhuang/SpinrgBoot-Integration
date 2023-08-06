@@ -53,8 +53,8 @@ public class CodeGenerator {
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://101.43.21.132:3310/Test?useUnicode=true&characterEncoding=utf8");
-        dsc.setDriverName("com.mysql.jdbc.Driver");
+        dsc.setUrl("jdbc:mysql://101.43.21.132:3307/test?useUnicode=true&characterEncoding=utf8");
+        dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
         dsc.setPassword("123456");
         mpg.setDataSource(dsc);
@@ -77,7 +77,7 @@ public class CodeGenerator {
         sc.setEntityLombokModel(true);
         sc.setRestControllerStyle(true);
         sc.setControllerMappingHyphenStyle(true);
-        sc.setTablePrefix("tbl_");
+        //sc.setTablePrefix("tbl_");
         sc.setInclude(scanner("表名，多个英文逗号分割").split(","));
         mpg.setStrategy(sc);
 
