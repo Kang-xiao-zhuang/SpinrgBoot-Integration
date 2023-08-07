@@ -1,10 +1,8 @@
 package com.zhuang.springbootmybatisplus.mapperapi;
 
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.zhuang.springbootmybatisplus.entity.TUser;
 import com.zhuang.springbootmybatisplus.mapper.TUserMapper;
