@@ -1,0 +1,13 @@
+CREATE TABLE product
+(
+    id BIGINT(20) NOT NULL COMMENT '主键ID',
+    NAME VARCHAR(30) NULL DEFAULT NULL COMMENT '商品名称',
+    price INT(11) DEFAULT 0 COMMENT '价格',
+    VERSION INT(11) DEFAULT 0 COMMENT '乐观锁版本号',
+    PRIMARY KEY (id)
+)
+    ENGINE = INNODB,
+CHARACTER SET utf8,
+COLLATE utf8_general_ci;
+
+INSERT INTO product (id, NAME, price) VALUES (1, '外星人笔记本', 100);
