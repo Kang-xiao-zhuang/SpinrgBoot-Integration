@@ -26,18 +26,10 @@ public class DirectConsumer2 {
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
             channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, ROUTING_KEY[2]);
 
-            channel.basicConsume(QUEUE_NAME, true, new DeliverCallback() {
-                @Override
-                public void handle(String s, Delivery delivery) throws IOException {
-                    String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
-                    log.info("接收到的消息" + message);
-                }
-            }, new CancelCallback() {
-                @Override
-                public void handle(String s) throws IOException {
-                    log.warn("接受失败...");
-                }
-            });
+            channel.basicConsume(QUEUE_NAME, true, (s, delivery) -> {
+                String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
+                log.info("接收到的消息" + message);
+            }, s -> log.warn("接受失败..."));
         }
     }
 }

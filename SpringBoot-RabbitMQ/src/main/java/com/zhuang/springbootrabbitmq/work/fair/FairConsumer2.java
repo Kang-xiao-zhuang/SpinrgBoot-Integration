@@ -29,17 +29,17 @@ public class FairConsumer2 {
             //通过交换机创建 声明队列 绑定关系 路由key 发送消息 和接收消息
             //设定指标的值
             channel.basicQos(1);
-            channel.basicConsume(QUEUE_NAME, false, new DeliverCallback() {
-                @SneakyThrows
-                @Override
-                public void handle(String s, Delivery delivery) throws IOException {
-                    log.info("Consumer2号接收消息" + new String(delivery.getBody(), StandardCharsets.UTF_8));
+            channel.basicConsume(QUEUE_NAME, false, (s, delivery) -> {
+                log.info("Consumer2号接收消息" + new String(delivery.getBody(), StandardCharsets.UTF_8));
+                try {
                     Thread.sleep(100);
-                    channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+                channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
             }, new CancelCallback() {
                 @Override
-                public void handle(String s) throws IOException {
+                public void handle(String s) {
                     log.warn("接受失败...");
                 }
             });

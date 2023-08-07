@@ -30,19 +30,11 @@ public class AllConsumer1 {
             channel.queueBind(QUEUE_NAME[0], EXCHANGE_NAME, "*.*.rabbit");
             channel.queueBind(QUEUE_NAME[0], EXCHANGE_NAME, "lazy.#");
 
-            channel.basicConsume(QUEUE_NAME[0], true, new DeliverCallback() {
-                @Override
-                public void handle(String s, Delivery delivery) throws IOException {
-                    String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
-                    log.info("接收到的消息" + message);
-                    log.info("队列名->" + QUEUE_NAME[0] + "绑定键->" + delivery.getEnvelope().getRoutingKey());
-                }
-            }, new CancelCallback() {
-                @Override
-                public void handle(String s) throws IOException {
-                    log.warn("接受失败...");
-                }
-            });
+            channel.basicConsume(QUEUE_NAME[0], true, (s, delivery) -> {
+                String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
+                log.info("接收到的消息" + message);
+                log.info("队列名->" + QUEUE_NAME[0] + "绑定键->" + delivery.getEnvelope().getRoutingKey());
+            }, s -> log.warn("接受失败..."));
         } catch (IOException | TimeoutException e) {
             e.printStackTrace();
         }

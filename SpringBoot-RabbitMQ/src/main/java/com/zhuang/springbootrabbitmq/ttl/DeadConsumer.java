@@ -22,12 +22,7 @@ public class DeadConsumer {
     public static void main(String[] args) throws IOException, TimeoutException {
         Channel channel = RabbitMQUtils.getChannel("101.43.21.132", 5672, "admin", "admin", "/");
 
-        channel.basicConsume(DEAD_QUEUE, true, new DeliverCallback() {
-            @Override
-            public void handle(String s, Delivery delivery) throws IOException {
-                log.info("DeadConsumer接受消息" + new String(delivery.getBody(), StandardCharsets.UTF_8));
-            }
-        }, new CancelCallback() {
+        channel.basicConsume(DEAD_QUEUE, true, (s, delivery) -> log.info("DeadConsumer接受消息" + new String(delivery.getBody(), StandardCharsets.UTF_8)), new CancelCallback() {
             @Override
             public void handle(String s) throws IOException {
                 log.warn("接受失败");

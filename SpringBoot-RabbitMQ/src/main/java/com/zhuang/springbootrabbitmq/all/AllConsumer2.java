@@ -29,19 +29,11 @@ public class AllConsumer2 {
             channel.queueDeclare(QUEUE_NAME[1], false, false, false, null);
             channel.queueBind(QUEUE_NAME[1], EXCHANGE_NAME, "*.orange.*");
 
-            channel.basicConsume(QUEUE_NAME[1], true, new DeliverCallback() {
-                @Override
-                public void handle(String s, Delivery delivery) throws IOException {
-                    String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
-                    log.info("接收到的消息" + message);
-                    log.info("队列名->" + QUEUE_NAME[1] + "绑定键->" + delivery.getEnvelope().getRoutingKey());
-                }
-            }, new CancelCallback() {
-                @Override
-                public void handle(String s) throws IOException {
-                    log.warn("接受失败...");
-                }
-            });
+            channel.basicConsume(QUEUE_NAME[1], true, (s, delivery) -> {
+                String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
+                log.info("接收到的消息" + message);
+                log.info("队列名->" + QUEUE_NAME[1] + "绑定键->" + delivery.getEnvelope().getRoutingKey());
+            }, s -> log.warn("接受失败..."));
         } catch (IOException | TimeoutException e) {
             e.printStackTrace();
         }

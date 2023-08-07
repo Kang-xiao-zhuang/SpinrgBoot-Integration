@@ -26,14 +26,9 @@ public class LunXunConsumer1 {
         try (Channel channel = RabbitMQUtils.getChannel("101.43.21.132", 5672, "admin", "admin", "/")) {
             //通过连接获得通道Channel
             //通过交换机创建 声明队列 绑定关系 路由key 发送消息 和接收消息
-            channel.basicConsume(QUEUE_NAME, true, new DeliverCallback() {
+            channel.basicConsume(QUEUE_NAME, true, (s, delivery) -> log.info("Consumer1号接收消息" + new String(delivery.getBody(), StandardCharsets.UTF_8)), new CancelCallback() {
                 @Override
-                public void handle(String s, Delivery delivery) throws IOException {
-                    log.info("Consumer1号接收消息" + new String(delivery.getBody(), StandardCharsets.UTF_8));
-                }
-            }, new CancelCallback() {
-                @Override
-                public void handle(String s) throws IOException {
+                public void handle(String s) {
                     log.warn("接受失败...");
                 }
             });

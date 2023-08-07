@@ -37,16 +37,16 @@ public class ConfirmMessage {
     public static void publishMessageIndividually() throws IOException, TimeoutException, InterruptedException {
         Channel channel = RabbitMQUtils.getChannel(IP_ADDRESS, PORT, USER, PASSWORD, "/");
         // 队列声明
-        String queuename = UUID.randomUUID().toString();
+        String queueName = UUID.randomUUID().toString();
 
-        channel.queueDeclare(queuename, true, false, false, null);
+        channel.queueDeclare(queueName, true, false, false, null);
         channel.confirmSelect();
 
         long begin = System.currentTimeMillis();
         //批量发消息
         for (int i = 0; i < MESSAGE_COUNT; i++) {
             String message = "消息" + i;
-            channel.basicPublish("", queuename, null, message.getBytes());
+            channel.basicPublish("", queueName, null, message.getBytes());
             // 单个消息发布马上确认
             boolean flag = channel.waitForConfirms();
             if (flag) {
@@ -64,20 +64,20 @@ public class ConfirmMessage {
     public static void publishMessageBatch() throws IOException, TimeoutException, InterruptedException {
         Channel channel = RabbitMQUtils.getChannel(IP_ADDRESS, PORT, USER, PASSWORD, "/");
         // 队列声明
-        String queuename = UUID.randomUUID().toString();
+        String queueName = UUID.randomUUID().toString();
 
-        channel.queueDeclare(queuename, true, false, false, null);
+        channel.queueDeclare(queueName, true, false, false, null);
         channel.confirmSelect();
 
         long begin = System.currentTimeMillis();
         //批量确认消息大小
-        int bathcSize = 100;
+        int bathSize = 100;
         //批量发消息
         for (int i = 0; i < MESSAGE_COUNT; i++) {
             String message = "消息" + i;
-            channel.basicPublish("", queuename, null, message.getBytes());
+            channel.basicPublish("", queueName, null, message.getBytes());
             // 单个消息发布马上确认
-            if (i % bathcSize == 0) {
+            if (i % bathSize == 0) {
                 log.info("消息发送成功");
                 channel.waitForConfirms();
             }
@@ -93,37 +93,31 @@ public class ConfirmMessage {
     public static void publishMessageAsync() throws IOException, TimeoutException {
         Channel channel = RabbitMQUtils.getChannel(IP_ADDRESS, PORT, USER, PASSWORD, "/");
         // 队列声明
-        String queuename = UUID.randomUUID().toString();
+        String queueName = UUID.randomUUID().toString();
 
-        channel.queueDeclare(queuename, true, false, false, null);
+        channel.queueDeclare(queueName, true, false, false, null);
         channel.confirmSelect();
 
         long begin = System.currentTimeMillis();
         // 线程安全有序的一个哈希表 适用于高并发的情况下
         ConcurrentSkipListMap<Long, String> outstandingConfirms = new ConcurrentSkipListMap<>();
-        channel.addConfirmListener(new ConfirmCallback() {
-            @Override
-            public void handle(long l, boolean b) throws IOException {
-                //消息成功回调函数
-                if (b) {
-                    ConcurrentNavigableMap<Long, String> confirm = outstandingConfirms.headMap(l);
-                    confirm.clear();
-                } else {
-                    outstandingConfirms.remove(l);
-                }
-                log.info("确认的消息" + l);
+        channel.addConfirmListener((l, b) -> {
+            //消息成功回调函数
+            if (b) {
+                ConcurrentNavigableMap<Long, String> confirm = outstandingConfirms.headMap(l);
+                confirm.clear();
+            } else {
+                outstandingConfirms.remove(l);
             }
-        }, new ConfirmCallback() {
-            @Override
-            public void handle(long l, boolean b) throws IOException {
-                //消息失败回调函数
-                String message = outstandingConfirms.get(l);
-                log.warn("未确认的消息" + message);
-            }
+            log.info("确认的消息" + l);
+        }, (l, b) -> {
+            //消息失败回调函数
+            String message = outstandingConfirms.get(l);
+            log.warn("未确认的消息" + message);
         });
         for (int i = 0; i < MESSAGE_COUNT; i++) {
             String message = "消息" + i;
-            channel.basicPublish("", queuename, null, message.getBytes());
+            channel.basicPublish("", queueName, null, message.getBytes());
             outstandingConfirms.put(channel.getNextPublishSeqNo(), message);
         }
 

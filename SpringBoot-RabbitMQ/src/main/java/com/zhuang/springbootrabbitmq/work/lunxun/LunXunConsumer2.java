@@ -33,7 +33,7 @@ public class LunXunConsumer2 {
                 }
             }, new CancelCallback() {
                 @Override
-                public void handle(String s) throws IOException {
+                public void handle(String s) {
                     log.warn("接受失败...");
                 }
             });

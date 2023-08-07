@@ -33,17 +33,9 @@ public class TopicConsumer {
         //把该临时队列绑定我们的 exchange 其中 routingkey(也称之为 binding key)为空字符串
         channel.queueBind(queueName, EXCHANGE_NAME, "");
         log.info("等待接收消息,把接收到的消息打印在屏幕........... ");
-        channel.basicConsume(queueName, true, new DeliverCallback() {
-            @Override
-            public void handle(String s, Delivery delivery) throws IOException {
-                String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
-                log.info("接收到的消息" + message);
-            }
-        }, new CancelCallback() {
-            @Override
-            public void handle(String s) throws IOException {
-                log.warn("接受失败...");
-            }
-        });
+        channel.basicConsume(queueName, true, (s, delivery) -> {
+            String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
+            log.info("接收到的消息" + message);
+        }, s -> log.warn("接受失败..."));
     }
 }
