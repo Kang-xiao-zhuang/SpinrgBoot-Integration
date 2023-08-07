@@ -66,4 +66,20 @@ public class MybatisMapperTest {
         System.out.println("是否有上一页："+page.hasPrevious());
         System.out.println("是否有下一页："+page.hasNext());
     }
+
+    @Test
+    void testSelectPageVo(){
+    //设置分页参数
+        Page<TUser> page = new Page<>(1, 5);
+        mapper.selectPageVo(page, 18);
+    //获取分页数据
+        List<TUser> list = page.getRecords();
+        list.forEach(System.out::println);
+        System.out.println("当前页："+page.getCurrent());
+        System.out.println("每页显示的条数："+page.getSize());
+        System.out.println("总记录数："+page.getTotal());
+        System.out.println("总页数："+page.getPages());
+        System.out.println("是否有上一页："+page.hasPrevious());
+        System.out.println("是否有下一页："+page.hasNext());
+    }
 }
