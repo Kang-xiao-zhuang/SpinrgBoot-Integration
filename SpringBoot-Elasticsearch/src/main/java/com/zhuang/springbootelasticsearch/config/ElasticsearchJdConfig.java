@@ -21,7 +21,7 @@ public class ElasticsearchJdConfig {
         String[] split = path.split(":");
         String scheme = split[0];
         String host = split[1].split("//")[1];
-        Integer port = Integer.valueOf(split[2]);
+        int port = Integer.parseInt(split[2]);
         return new RestHighLevelClient(RestClient.builder(new HttpHost(host, port, scheme)));
     }
 }

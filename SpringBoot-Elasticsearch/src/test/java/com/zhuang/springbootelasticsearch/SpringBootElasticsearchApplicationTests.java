@@ -49,7 +49,7 @@ class SpringBootElasticsearchApplicationTests {
         product.setTitle("华为手机");
         product.setCategory("手机");
         product.setPrice(2999.0);
-        product.setImages("http://itkxz.cn/hw.jpg");
+        product.setImages("https://itkxz.cn/hw.jpg");
         productDao.save(product);
     }
 
@@ -60,7 +60,7 @@ class SpringBootElasticsearchApplicationTests {
         product.setTitle("小米手机");
         product.setCategory("手机");
         product.setPrice(2999.0);
-        product.setImages("http://itkxz.cn/hw.jpg");
+        product.setImages("https://itkxz.cn/hw.jpg");
         Product save = productDao.save(product);
         System.out.println("save = " + save);
     }
@@ -94,11 +94,11 @@ class SpringBootElasticsearchApplicationTests {
         ArrayList<Product> productList = new ArrayList<>();
         for (int i = 3; i < 6; i++) {
             Product product = new Product();
-            product.setId(Long.valueOf(i));
+            product.setId((long) i);
             product.setTitle("[" + i + "]小米手机");
             product.setCategory("手机");
             product.setPrice(1999.0 + i);
-            product.setImages("http://www.atguigu/xm.jpg");
+            product.setImages("https://www.atguigu/xm.jpg");
             productList.add(product);
         }
         productDao.saveAll(productList);

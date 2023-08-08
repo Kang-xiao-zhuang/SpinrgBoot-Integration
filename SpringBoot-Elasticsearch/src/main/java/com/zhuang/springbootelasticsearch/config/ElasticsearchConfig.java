@@ -1,6 +1,7 @@
 package com.zhuang.springbootelasticsearch.config;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
@@ -15,6 +16,7 @@ import org.springframework.data.elasticsearch.config.AbstractElasticsearchConfig
  * @Date 2021/12/23 20:21
  * @Author by dell
  */
+@EqualsAndHashCode(callSuper = true)
 @ConfigurationProperties(prefix = "elasticsearch")
 @Configuration
 @Data

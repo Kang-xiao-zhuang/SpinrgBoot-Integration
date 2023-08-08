@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class ContentDao {
     @NonNull
-    private RestHighLevelClient restHighLevelClient;
+    private final RestHighLevelClient restHighLevelClient;
 
     /**
      * 根据关键词查询数据
@@ -53,8 +53,8 @@ public class ContentDao {
         // 查询数据放进es中
         BulkRequest bulkRequest = new BulkRequest();
         bulkRequest.timeout("2ms");
-        for (int i = 0; i < contents.size(); i++) {
-            bulkRequest.add(new IndexRequest("jd_goods").source(JSON.toJSONString(contents.get(i)), XContentType.JSON));
+        for (Content content : contents) {
+            bulkRequest.add(new IndexRequest("jd_goods").source(JSON.toJSONString(content), XContentType.JSON));
         }
         BulkResponse bulk = restHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT);
         return !bulk.hasFailures();
@@ -102,11 +102,11 @@ public class ContentDao {
             Map<String, Object> sourceAsMap = documentFields.getSourceAsMap();
             if (name != null) {
                 Text[] fragments = name.fragments();
-                String newName = "";
+                StringBuilder newName = new StringBuilder();
                 for (Text text : fragments) {
-                    newName += text;
+                    newName.append(text);
                 }
-                sourceAsMap.put("name", newName);
+                sourceAsMap.put("name", newName.toString());
             }
             list.add(sourceAsMap);
         }
