@@ -2,6 +2,7 @@ package com.zhuang.springbootmybatisplus.service;
 
 import com.zhuang.springbootmybatisplus.entity.TUser;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zhuang.springbootmybatisplus.page.PageData;
 
 /**
  * <p>
@@ -12,5 +13,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2023-08-03
  */
 public interface TUserService extends IService<TUser> {
+
+    PageData<TUser> getPageInfo();
+
 
 }
