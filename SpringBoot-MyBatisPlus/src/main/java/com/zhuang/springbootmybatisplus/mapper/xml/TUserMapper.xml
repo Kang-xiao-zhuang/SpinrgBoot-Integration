@@ -4,20 +4,25 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zhuang.springbootmybatisplus.entity.TUser">
-        <id column="uid" property="uid" />
-        <result column="uname" property="uname" />
-        <result column="ugender" property="ugender" />
-        <result column="uage" property="uage" />
+        <id column="uid" property="uid"/>
+        <result column="uname" property="uname"/>
+        <result column="ugender" property="ugender"/>
+        <result column="uage" property="uage"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        uid, uname, ugender, uage
+        uid
+        , uname, ugender, uage
     </sql>
 
     <!--IPage<User> selectPageVo(Page<User> page, Integer age);-->
     <select id="selectPageVo" resultType="com.zhuang.springbootmybatisplus.entity.TUser">
         SELECT <include refid="Base_Column_List"></include> FROM t_user WHERE uage > #{uage}
+    </select>
+    <select id="getAll" resultType="com.zhuang.springbootmybatisplus.entity.TUser">
+        SELECT *
+        FROM t_user ${ew.customSqlSegment}
     </select>
 
 </mapper>
