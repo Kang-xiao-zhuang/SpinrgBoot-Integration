@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhuang.springbootmybatisplus.entity.TUser;
 import com.zhuang.springbootmybatisplus.mapper.TUserMapper;
+import com.zhuang.springbootmybatisplus.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -81,5 +82,14 @@ public class MybatisMapperTest {
         System.out.println("总页数："+page.getPages());
         System.out.println("是否有上一页："+page.hasPrevious());
         System.out.println("是否有下一页："+page.hasNext());
+    }
+
+
+    @Test
+    void testWrapper(){
+        QueryWrapper<TUser> wrapper = new QueryWrapper<>();
+        wrapper.ne("uid",1);
+        List<TUser> all = mapper.getAll(wrapper);
+        all.forEach(System.out::println);
     }
 }

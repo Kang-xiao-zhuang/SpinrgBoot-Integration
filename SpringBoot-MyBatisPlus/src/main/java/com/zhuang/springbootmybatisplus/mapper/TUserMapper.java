@@ -1,11 +1,16 @@
 package com.zhuang.springbootmybatisplus.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhuang.springbootmybatisplus.entity.TUser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * <p>
@@ -25,4 +30,6 @@ public interface TUserMapper extends BaseMapper<TUser> {
      */
     IPage<TUser> selectPageVo(@Param("page") Page<TUser> page, @Param("uage") Integer uage);
 
+
+    List<TUser> getAll(@Param(Constants.WRAPPER) Wrapper<TUser> userWrapper);
 }
