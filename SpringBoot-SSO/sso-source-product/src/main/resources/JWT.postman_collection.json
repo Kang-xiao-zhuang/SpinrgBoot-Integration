@@ -1,0 +1,117 @@
+{
+	"info": {
+		"_postman_id": "78b6e3a7-856c-416c-971a-c30e3bd5efad",
+		"name": "JWT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "认证服务测试",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"zhangsan\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9001/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "订单资源测试",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiJ9.eyJ1c2VyIjoie1wiaWRcIjpudWxsLFwidXNlcm5hbWVcIjpcInpoYW5nc2FuXCIsXCJwYXNzd29yZFwiOm51bGwsXCJzdGF0dXNcIjpudWxsLFwic3lzUm9sZXNcIjpbe1wiaWRcIjoxLFwibmFtZVwiOlwiUk9MRV9VU0VSXCIsXCJkZXNjXCI6XCLnlKjmiLfmnYPpmZBcIn0se1wiaWRcIjozLFwibmFtZVwiOlwiUk9MRV9QUk9EVUNUXCIsXCJkZXNjXCI6XCLkuqflk4HmnYPpmZBcIn1dfSIsImp0aSI6IlptVmtNekUyWlRjdE16QTFOeTAwTkRaaUxUa3paalF0TnpJNU9HSXhaRFUyTnpreSIsImV4cCI6MTY5Mzg3NDI2MH0.cbcKI8jgmGp7WkrS9nw04uJ7jD7L6v93vX7pmOlViB-KqLFmhMT9mqGlVAyUxLPRuOkS_8ueh688AqR1fskQ4rsLJMDSLdOP918HNcJR05Z0SsXxg0leDI7QsU1eBRrB3kNoneEkQDBk1UZrzXD6tt9uxWk9WUjAPTubX7w9leUbVkL5y2GgZD8Vo2PSLnCWGN_XXJDZxJAYDtpNOEH9R6REVxlUWGt3WNaisKHewXLUYIWqyK0h3r94YNMlJZ4G1vMuFv0Lo44DjdORFMkdcQBwfAUwsLWfGAp1SkHTbi0DpjskFfvKWYmX8tko2Z0IgL7BS_3nsHJQjtce1MjjwQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:9002/order/info",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9002",
+					"path": [
+						"order",
+						"info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "产品资源测试",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiJ9.eyJ1c2VyIjoie1wiaWRcIjpudWxsLFwidXNlcm5hbWVcIjpcInpoYW5nc2FuXCIsXCJwYXNzd29yZFwiOm51bGwsXCJzdGF0dXNcIjpudWxsLFwic3lzUm9sZXNcIjpbe1wiaWRcIjoxLFwibmFtZVwiOlwiUk9MRV9VU0VSXCIsXCJkZXNjXCI6XCLnlKjmiLfmnYPpmZBcIn0se1wiaWRcIjozLFwibmFtZVwiOlwiUk9MRV9QUk9EVUNUXCIsXCJkZXNjXCI6XCLkuqflk4HmnYPpmZBcIn1dfSIsImp0aSI6IlptVmtNekUyWlRjdE16QTFOeTAwTkRaaUxUa3paalF0TnpJNU9HSXhaRFUyTnpreSIsImV4cCI6MTY5Mzg3NDI2MH0.cbcKI8jgmGp7WkrS9nw04uJ7jD7L6v93vX7pmOlViB-KqLFmhMT9mqGlVAyUxLPRuOkS_8ueh688AqR1fskQ4rsLJMDSLdOP918HNcJR05Z0SsXxg0leDI7QsU1eBRrB3kNoneEkQDBk1UZrzXD6tt9uxWk9WUjAPTubX7w9leUbVkL5y2GgZD8Vo2PSLnCWGN_XXJDZxJAYDtpNOEH9R6REVxlUWGt3WNaisKHewXLUYIWqyK0h3r94YNMlJZ4G1vMuFv0Lo44DjdORFMkdcQBwfAUwsLWfGAp1SkHTbi0DpjskFfvKWYmX8tko2Z0IgL7BS_3nsHJQjtce1MjjwQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:9003/product/info",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9003",
+					"path": [
+						"product",
+						"info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "密码错误测试",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"zhangsan\",\r\n    \"password\": \"1233456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9001/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
