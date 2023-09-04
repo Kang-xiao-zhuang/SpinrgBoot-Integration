@@ -19,11 +19,10 @@ import java.io.IOException;
 
 /**
  * 验证过滤器
- *
-
  */
 public class JwtVerificationFilter extends BasicAuthenticationFilter {
-    private RsaKeyProperties prop;
+
+    private final RsaKeyProperties prop;
 
     public JwtVerificationFilter(AuthenticationManager authenticationManager, RsaKeyProperties prop) {
         super(authenticationManager);
